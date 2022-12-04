@@ -1,5 +1,7 @@
 package pairmatching.view;
 
+import java.util.List;
+
 public class OutputView {
     private static String INPUT_FUNCTION = "기능을 선택하세요.\n" +
             "1. 페어 매칭\n" +
@@ -17,6 +19,7 @@ public class OutputView {
             "############################################";
     private static String INPUT_COURSE_LEVEL_MISSION = "과정, 레벨, 미션을 선택하세요.\n" +
             "ex) 백엔드, 레벨1, 자동차경주";
+    private static String PRINT_PAIR_MATCHING_RESULT = "페어 매칭 결과입니다.";
 
     public void printInputFunction() {
         System.out.println(INPUT_FUNCTION);
@@ -28,5 +31,12 @@ public class OutputView {
 
     public void printInputCourseLevelMission() {
         System.out.println(INPUT_COURSE_LEVEL_MISSION);
+    }
+
+    public void printMatchingResult(List<List<String>> dividedCrews){
+        System.out.println(PRINT_PAIR_MATCHING_RESULT);
+        for(List<String> crews : dividedCrews){
+            System.out.println(String.join(" : ", crews));
+        }
     }
 }
