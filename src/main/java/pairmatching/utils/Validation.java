@@ -15,6 +15,8 @@ public class Validation {
     private static final String CHECK = "2";
     private static final String RESET = "3";
     private static final String QUIT = "Q";
+    private static final String YES = "네";
+    private static final String NO = "아니오";
 
     public static void isFunction(String function) {
         if (!function.equals(MATCH) && !function.equals(CHECK) && !function.equals(RESET) && !function.equals(QUIT)) {
@@ -72,5 +74,10 @@ public class Validation {
         List<List<String>> result = matchedResult.getOrDefault(commands, new ArrayList<>());
         if (result.equals(new ArrayList<>()))
             throw new IllegalArgumentException(ErrorMessage.NOT_EXIST_RESULT.getMessage());
+    }
+
+    public static void isYesOrNo(String rematching){
+        if(!rematching.equals(YES) && !rematching.equals(NO))
+            throw new IllegalArgumentException(ErrorMessage.INPUT_YES_OR_NO.getMessage());
     }
 }

@@ -1,7 +1,9 @@
 package pairmatching.controller;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import pairmatching.ErrorMessage;
 import pairmatching.service.MatchingService;
+import pairmatching.utils.Calculator;
 import pairmatching.utils.Validation;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
@@ -42,12 +44,31 @@ public class PairMatchingController {
     }
 
     public void matching(List<String> commands) {
+        List<List<String>> matched = new ArrayList<>();
+        try {
+            matched = countMatching(commands);
+        }catch (IllegalArgumentException e){
+            outputView.printException(e);
+            return;
+        }
+        matchedResult.put(commands, matched);
+        outputView.printMatchingResult(matched);
+    }
+
+    private List<List<String>> countMatching(List<String> commands){
         String course = commands.get(0);
         List<String> crews = matchingService.getCrews(course);
-        List<String> shuffledCrews = Randoms.shuffle(crews);
-        List<List<String>> dividedCrews = divideCrews(shuffledCrews);
-        matchedResult.put(commands, dividedCrews);
-        outputView.printMatchingResult(dividedCrews);
+        List<List<String>> dividedCrews = new ArrayList<>();
+        for(int i=0;i<3;i++){
+            List<String> shuffledCrews = Randoms.shuffle(crews);
+            dividedCrews = divideCrews(shuffledCrews);
+            if(!isResultInMatched(commands))
+                return dividedCrews;
+            List<List<String>> matched = matchedResult.get(commands);
+            if(!Calculator.isMatchedResultContainResult(dividedCrews,matched))
+                return dividedCrews;
+        }
+        throw new IllegalArgumentException(ErrorMessage.PRINT_MATCHING_FAIL.getMessage());
     }
 
     private List<List<String>> divideCrews(List<String> crews) {
@@ -81,5 +102,9 @@ public class PairMatchingController {
         }
         List<List<String>> result = matchedResult.get(commands);
         outputView.printMatchingResult(result);
+    }
+
+    public void resetMatchedResult() {
+        matchedResult = new HashMap<>();
     }
 }

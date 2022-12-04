@@ -27,6 +27,9 @@ public class PairMatching {
             if(function.equals(CHECK)){
                 functionCheck();
             }
+            if(function.equals(RESET)){
+                functionReset();
+            }
         }
     }
 
@@ -41,5 +44,9 @@ public class PairMatching {
     private void functionCheck(){
         List<String> courseLevelMission = pairMatchingController.inputCourseLevelMission();
         pairMatchingController.printExistMatchedResult(courseLevelMission);
+    }
+
+    private void functionReset(){
+        pairMatchingController.resetMatchedResult();
     }
 }
