@@ -5,6 +5,8 @@ import pairmatching.ErrorMessage;
 import pairmatching.Level;
 import pairmatching.Mission;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -64,5 +66,11 @@ public class Validation {
             }
         }
         throw new IllegalArgumentException(ErrorMessage.INPUT_COURSE_LEVEL_MISSION.getMessage());
+    }
+
+    public static void isResultInMatched(HashMap<List<String>, List<List<String>>> matchedResult, List<String> commands) {
+        List<List<String>> result = matchedResult.getOrDefault(commands, new ArrayList<>());
+        if (result.equals(new ArrayList<>()))
+            throw new IllegalArgumentException(ErrorMessage.NOT_EXIST_RESULT.getMessage());
     }
 }

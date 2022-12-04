@@ -33,10 +33,14 @@ public class OutputView {
         System.out.println(INPUT_COURSE_LEVEL_MISSION);
     }
 
-    public void printMatchingResult(List<List<String>> dividedCrews){
+    public void printMatchingResult(List<List<String>> dividedCrews) {
         System.out.println(PRINT_PAIR_MATCHING_RESULT);
-        for(List<String> crews : dividedCrews){
+        for (List<String> crews : dividedCrews) {
             System.out.println(String.join(" : ", crews));
         }
+    }
+
+    public void printException(Exception e) {
+        System.out.println(e);
     }
 }

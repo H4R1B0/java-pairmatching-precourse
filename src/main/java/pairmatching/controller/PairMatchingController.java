@@ -2,6 +2,7 @@ package pairmatching.controller;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import pairmatching.service.MatchingService;
+import pairmatching.utils.Validation;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
@@ -53,5 +54,16 @@ public class PairMatchingController {
         for (int i = 0; i < crews.size(); i += 2)
             result.add(crews.subList(i, i + 2));
         return result;
+    }
+
+    public void printExistMatchedResult(List<String> commands) {
+        try {
+            Validation.isResultInMatched(matchedResult, commands);
+        } catch (IllegalArgumentException e) {
+            outputView.printException(e);
+            return;
+        }
+        List<List<String>> result = matchedResult.get(commands);
+        outputView.printMatchingResult(result);
     }
 }
