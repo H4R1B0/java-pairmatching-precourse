@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PairMatchingController {
+    private static final String YES = "네";
     private static InputView inputView;
     private static OutputView outputView;
     private static MatchingService matchingService;
@@ -24,14 +25,20 @@ public class PairMatchingController {
     }
 
     public String inputFunction() {
-        outputView.printInputFunction();
         return inputView.readFunction();
     }
 
     public List<String> inputCourseLevelMission() {
         outputView.printInformation();
-        outputView.printInputCourseLevelMission();
-        return inputView.readCourseLevelMission();
+        List<String> courseLevelMission = inputView.readCourseLevelMission();
+        return courseLevelMission;
+    }
+
+    public List<String> inputReMatching(List<String> courseLevelMission) {
+        String rematching = inputView.readYesOrNo();
+        if (rematching.equals(YES))
+            return courseLevelMission;
+        return inputReMatching(inputView.readCourseLevelMission());
     }
 
     public void matching(List<String> commands) {
@@ -54,6 +61,15 @@ public class PairMatchingController {
         for (int i = 0; i < crews.size(); i += 2)
             result.add(crews.subList(i, i + 2));
         return result;
+    }
+
+    public boolean isResultInMatched(List<String> commands) {
+        try {
+            Validation.isResultInMatched(matchedResult, commands);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        return true;
     }
 
     public void printExistMatchedResult(List<String> commands) {

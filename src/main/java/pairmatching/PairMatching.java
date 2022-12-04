@@ -32,6 +32,9 @@ public class PairMatching {
 
     private void functionMatch() {
         List<String> courseLevelMission = pairMatchingController.inputCourseLevelMission();
+        if(pairMatchingController.isResultInMatched(courseLevelMission)){
+            courseLevelMission = pairMatchingController.inputReMatching(courseLevelMission);
+        }
         pairMatchingController.matching(courseLevelMission);
     }
 
