@@ -25,13 +25,17 @@ public class Validation {
     }
 
     public static void isCourseLevelMission(List<String> courseLevelMission) {
-        if (courseLevelMission.size() != 3)
-            throw new IllegalArgumentException(ErrorMessage.INPUT_COURSE_LEVEL_MISSION.getMessage());
+        isCommandsSizeThree(courseLevelMission);
         String course = courseLevelMission.get(0), level = courseLevelMission.get(1), mission = courseLevelMission.get(2);
         isCourse(course);
         isLevel(level);
         isMission(mission);
         isMissionEqualLevel(mission, level);
+    }
+
+    private static void isCommandsSizeThree(List<String> courseLevelMission) {
+        if (courseLevelMission.size() != 3)
+            throw new IllegalArgumentException(ErrorMessage.INPUT_COURSE_LEVEL_MISSION.getMessage());
     }
 
     private static void isCourse(String course) {
@@ -76,8 +80,8 @@ public class Validation {
             throw new IllegalArgumentException(ErrorMessage.NOT_EXIST_RESULT.getMessage());
     }
 
-    public static void isYesOrNo(String rematching){
-        if(!rematching.equals(YES) && !rematching.equals(NO))
+    public static void isYesOrNo(String rematching) {
+        if (!rematching.equals(YES) && !rematching.equals(NO))
             throw new IllegalArgumentException(ErrorMessage.INPUT_YES_OR_NO.getMessage());
     }
 }
