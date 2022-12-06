@@ -14,6 +14,7 @@ import java.util.List;
 
 public class PairMatchingController {
     private static final String YES = "네";
+    private static final int MATCH_COUNT_MAX = 3;
     private static InputView inputView;
     private static OutputView outputView;
     private static MatchingService matchingService;
@@ -32,8 +33,7 @@ public class PairMatchingController {
 
     public List<String> inputCourseLevelMission() {
         outputView.printInformation();
-        List<String> courseLevelMission = inputView.readCourseLevelMission();
-        return courseLevelMission;
+        return inputView.readCourseLevelMission();
     }
 
     public List<String> inputReMatching(List<String> courseLevelMission) {
@@ -44,10 +44,10 @@ public class PairMatchingController {
     }
 
     public void matching(List<String> commands) {
-        List<List<String>> matched = new ArrayList<>();
+        List<List<String>> matched;
         try {
             matched = countMatching(commands);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             outputView.printException(e);
             return;
         }
@@ -55,20 +55,27 @@ public class PairMatchingController {
         outputView.printMatchingResult(matched);
     }
 
-    private List<List<String>> countMatching(List<String> commands){
+    private List<List<String>> countMatching(List<String> commands) {
         String course = commands.get(0);
         List<String> crews = matchingService.getCrews(course);
-        List<List<String>> dividedCrews = new ArrayList<>();
-        for(int i=0;i<3;i++){
-            List<String> shuffledCrews = Randoms.shuffle(crews);
-            dividedCrews = divideCrews(shuffledCrews);
-            if(!isResultInMatched(commands))
+        for (int i = 0; i < MATCH_COUNT_MAX; i++) {
+            List<List<String>> dividedCrews = getDivideCrews(crews, commands);
+            if (!dividedCrews.equals(new ArrayList<>())) {
                 return dividedCrews;
-            List<List<String>> matched = matchedResult.get(commands);
-            if(!Calculator.isMatchedResultContainResult(dividedCrews,matched))
-                return dividedCrews;
+            }
         }
         throw new IllegalArgumentException(ErrorMessage.PRINT_MATCHING_FAIL.getMessage());
+    }
+
+    private List<List<String>> getDivideCrews(List<String> crews, List<String> commands) {
+        List<String> shuffledCrews = Randoms.shuffle(crews);
+        List<List<String>> dividedCrews = divideCrews(shuffledCrews);
+        if (!isResultInMatched(commands))
+            return dividedCrews;
+        List<List<String>> matched = matchedResult.get(commands);
+        if (!Calculator.isMatchedResultContainResult(dividedCrews, matched))
+            return dividedCrews;
+        return new ArrayList<>();
     }
 
     private List<List<String>> divideCrews(List<String> crews) {
